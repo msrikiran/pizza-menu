@@ -68,8 +68,8 @@ const Header = () => {
 };
 
 const Menu = () => {
-  // const pizzas = pizzaData;
-  const pizzas = [];
+  const pizzas = pizzaData;
+  // const pizzas = [];
   const numPizzas = pizzas.length;
   return (
     <div className="menu">
@@ -115,14 +115,15 @@ const Menu = () => {
 };
 const Pizza = (props) => {
   const { soldOut, photoName, name, ingredients, price } = props.pizzaObj;
-  if (soldOut) return null;
+  // if (soldOut) return null;
+
   return (
-    <li className="pizza">
+    <li className={`pizza ${soldOut ? 'sold-out' : ''}`}>
       <img src={photoName} alt={name} />
       <div>
         <h3>{name} </h3>
         <p>{ingredients} </p>
-        <span>{price} </span>
+        <span>{soldOut ? 'SOLD OUT' : price} </span>
       </div>
     </li>
   );
@@ -130,7 +131,7 @@ const Pizza = (props) => {
 
 const Footer = () => {
   const hour = new Date().getHours();
-  const openHour = 12;
+  const openHour = 8;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
   // if (hour >= openHour && hour <= closeHour) {
@@ -141,7 +142,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       {isOpen ? (
-        <Order closeHour={closeHour} />
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <p>
           We're happy to welcome you between {openHour}:00 and {closeHour}:00
@@ -151,10 +152,12 @@ const Footer = () => {
   );
 };
 
-const Order = (props) => {
+const Order = ({ openHour, closeHour }) => {
   return (
     <div className="order">
-      <p>We're open until {props.closeHour}:00</p>
+      <p>
+        We're {openHour}:00 and {closeHour}:00
+      </p>
       <button className="btn">Order</button>
     </div>
   );
